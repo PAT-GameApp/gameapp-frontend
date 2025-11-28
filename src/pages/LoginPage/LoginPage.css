@@ -1,0 +1,106 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary-light, #0066CC) 0%, var(--bg-secondary, #f8f9fa) 100%);
+}
+
+.login-container {
+  background: #fff;
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,51,160,0.10);
+  width: 100%;
+  max-width: 370px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1.5px solid var(--primary-light, #0066CC);
+}
+
+.login-container h2 {
+  color: var(--primary-color, #0033A0);
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form label {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--primary-color, #0033A0);
+  letter-spacing: 0.5px;
+}
+
+.login-form input {
+  padding: 0.6rem 0.85rem;
+  margin-bottom: 1.25rem;
+  border: 1.5px solid var(--primary-light, #0066CC);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f4f8ff;
+  color: var(--text-primary, #1a1a1a);
+  transition: border 0.2s;
+}
+
+.login-form input:focus {
+  outline: none;
+  border: 1.5px solid var(--primary-color, #0033A0);
+  background: #eaf2ff;
+}
+
+.login-submit {
+  background: linear-gradient(90deg, var(--primary-color, #0033A0) 60%, var(--primary-light, #0066CC) 100%);
+  color: #fff;
+  border: none;
+  padding: 0.85rem 0;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,51,160,0.08);
+  transition: background 0.2s, box-shadow 0.2s;
+  margin-top: 0.5rem;
+}
+
+.login-submit:hover {
+  background: linear-gradient(90deg, var(--primary-hover, #002880) 60%, var(--primary-color, #0033A0) 100%);
+  box-shadow: 0 4px 16px rgba(0,51,160,0.15);
+}
+
+.login-register-link {
+  margin-top: 1.2rem;
+  text-align: center;
+  font-size: 1rem;
+  color: var(--text-secondary, #666666);
+}
+
+.login-register-link a {
+  color: var(--primary-color, #0033A0);
+  font-weight: 600;
+  margin-left: 0.3rem;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.login-register-link a:hover {
+  color: var(--primary-hover, #002880);
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    padding: 1.5rem 1rem 1rem 1rem;
+    max-width: 95vw;
+  }
+  .login-container h2 {
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,4 @@
+/* Reuse login page styles for registration page */
+@import './LoginPage.css';
+
+/* You can add registration-specific styles here if needed */
