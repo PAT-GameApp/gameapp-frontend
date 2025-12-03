@@ -1,0 +1,241 @@
+.booking-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e8f0ff 100%);
+}
+
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+}
+
+.booking-header .header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.booking-header .cognizant-logo {
+  height: 45px;
+  width: auto;
+}
+
+.back-btn {
+  background: #0033a0;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #002080;
+  transform: translateX(-3px);
+}
+
+.booking-header h1 {
+  color: var(--primary-color, #0033A0);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.booking-main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.booking-container {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 4px 16px rgba(0,51,160,0.1);
+}
+
+.game-info-section {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #e8f0ff;
+}
+
+.game-icon-display {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.game-info-section h2 {
+  color: var(--primary-color, #0033A0);
+  font-size: 2rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.game-info-section p {
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.date-selection {
+  margin-bottom: 2.5rem;
+}
+
+.date-selection label {
+  display: block;
+  font-weight: 600;
+  color: var(--primary-color, #0033A0);
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.date-selection input[type="date"] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid var(--primary-light, #0066CC);
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f4f8ff;
+  color: #333;
+  cursor: pointer;
+  transition: border 0.2s, background 0.2s;
+}
+
+.date-selection input[type="date"]:focus {
+  outline: none;
+  border: 2px solid var(--primary-color, #0033A0);
+  background: #eaf2ff;
+}
+
+.time-slots-section h3 {
+  color: var(--primary-color, #0033A0);
+  font-size: 1.2rem;
+  margin: 0 0 1.5rem 0;
+  font-weight: 600;
+}
+
+.time-slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.time-slot {
+  padding: 1rem;
+  border: 2px solid var(--primary-light, #0066CC);
+  background: #fff;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--primary-color, #0033A0);
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.time-slot:hover:not(.unavailable) {
+  background: #f0f4ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,51,160,0.15);
+}
+
+.time-slot.selected {
+  background: linear-gradient(90deg, var(--primary-color, #0033A0), var(--primary-light, #0066CC));
+  color: #fff;
+  border-color: var(--primary-color, #0033A0);
+}
+
+.time-slot.unavailable {
+  background: #f0f0f0;
+  border-color: #ccc;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.booked-label {
+  display: block;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  font-weight: 400;
+}
+
+.confirm-booking-btn {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(90deg, var(--primary-color, #0033A0), var(--primary-light, #0066CC));
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0,51,160,0.2);
+}
+
+.confirm-booking-btn:hover:not(:disabled) {
+  background: linear-gradient(90deg, var(--primary-hover, #002880), var(--primary-color, #0033A0));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,51,160,0.3);
+}
+
+.confirm-booking-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.error-message {
+  background-color: #fee;
+  color: #c33;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.location-selection {
+  margin: 20px 0;
+}
+
+.location-selection label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+.location-selection input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .booking-main {
+    padding: 2rem 1rem;
+  }
+
+  .booking-container {
+    padding: 1.5rem;
+  }
+
+  .time-slots-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-header h1 {
+    font-size: 1.3rem;
+  }
+}

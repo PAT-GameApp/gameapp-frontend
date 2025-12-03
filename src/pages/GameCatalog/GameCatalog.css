@@ -1,0 +1,242 @@
+.game-catalog {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e8f0ff 100%);
+}
+
+.catalog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  background: #fff;
+  border-bottom: 2px solid var(--primary-light, #0066CC);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,51,160,0.08);
+}
+
+.catalog-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.catalog-header h1 {
+  color: var(--primary-color, #0033A0);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.cognizant-logo {
+  height: 40px;
+  width: auto;
+}
+
+.header-left h1 {
+  font-size: 1.8rem;
+  color: #0033a0;
+  margin: 0;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.notification-btn {
+  background: #f5f5f5;
+  border: none;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.notification-btn:hover {
+  background: #e0e0e0;
+  transform: scale(1.1);
+}
+
+.notification-icon {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fff, #f0f4ff);
+  border: 2px solid var(--primary-light, #0066CC);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+  position: relative;
+  font-size: 1.5rem;
+}
+
+.notification-icon:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #e8f0ff, #d0e0ff);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-color, #0033A0), var(--primary-light, #0066CC));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,51,160,0.2);
+  transition: transform 0.2s;
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
+}
+
+.catalog-main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.game-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0,51,160,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.game-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 24px rgba(0,51,160,0.2);
+  border: 2px solid var(--primary-light, #0066CC);
+}
+
+.game-image-container {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.game-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.game-card:hover .game-image {
+  transform: scale(1.1);
+}
+
+.game-icon-overlay {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.game-icon-large {
+  font-size: 1.8rem;
+}
+
+.game-info {
+  padding: 1.5rem;
+}
+
+.game-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary-color, #0033A0);
+  margin: 0 0 0.5rem 0;
+}
+
+.game-description {
+  color: #666;
+  font-size: 0.95rem;
+  margin: 0 0 1.25rem 0;
+  line-height: 1.5;
+}
+
+.game-book-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(90deg, var(--primary-color, #0033A0), var(--primary-light, #0066CC));
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.game-book-btn:hover {
+  background: linear-gradient(90deg, var(--primary-hover, #002880), var(--primary-color, #0033A0));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,51,160,0.25);
+}
+
+@media (max-width: 768px) {
+  .games-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .catalog-header-content {
+    padding: 1rem;
+  }
+  
+  .catalog-main {
+    padding: 2rem 1rem;
+  }
+  
+  .catalog-header h1 {
+    font-size: 1.5rem;
+  }
+}

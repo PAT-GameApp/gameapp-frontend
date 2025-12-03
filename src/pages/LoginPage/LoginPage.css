@@ -57,6 +57,23 @@
   background: #eaf2ff;
 }
 
+.error-message {
+  background-color: #fee;
+  color: #c33;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.loading {
+  text-align: center;
+  padding: 50px;
+  font-size: 18px;
+  color: #666;
+}
+
 .login-submit {
   background: linear-gradient(90deg, var(--primary-color, #0033A0) 60%, var(--primary-light, #0066CC) 100%);
   color: #fff;
