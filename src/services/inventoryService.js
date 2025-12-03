@@ -1,48 +1,50 @@
 import api from './api';
 
-const inventoryService = {  // Equipment endpoints
+const inventoryService = {
+  // Equipment endpoints
   getAllEquipment: async () => {
-    const response = await api.get('/api/equipment/');
+    const response = await api.get('/equipment/');
     return response.data;
   },
+
   getEquipmentById: async (id) => {
-    const response = await api.get(`/api/equipment/${id}`);
+    const response = await api.get(`/equipment/${id}`);
     return response.data;
   },
 
   addEquipment: async (equipmentData) => {
-    const response = await api.post('/api/equipment/add', equipmentData);
+    const response = await api.post('/equipment/add', equipmentData);
     return response.data;
   },
 
   updateEquipment: async (id, equipmentData) => {
-    const response = await api.put(`/api/equipment/${id}`, equipmentData);
+    const response = await api.put(`/equipment/${id}`, equipmentData);
     return response.data;
   },
 
   deleteEquipment: async (id) => {
-    const response = await api.delete(`/api/equipment/${id}`);
+    const response = await api.delete(`/equipment/${id}`);
     return response.data;
   },
 
   // Allotment endpoints
   getAllAllotments: async () => {
-    const response = await api.get('/api/allotments');
+    const response = await api.get('/allotments');
     return response.data;
   },
 
   getAllotmentById: async (id) => {
-    const response = await api.get(`/api/allotments/${id}`);
+    const response = await api.get(`/allotments/${id}`);
     return response.data;
   },
 
   addAllotment: async (allotmentData) => {
-    const response = await api.post('/api/allotments/addAllotment', allotmentData);
+    const response = await api.post('/allotments/addAllotment', allotmentData);
     return response.data;
   },
 
   deleteAllotment: async (id) => {
-    const response = await api.delete(`/api/allotments/${id}`);
+    const response = await api.delete(`/allotments/${id}`);
     return response.data;
   },
 };

@@ -13,26 +13,21 @@ const authService = {
     });
     return response.data;
   },
-  login: async (credentials) => {
-    // Backend uses Spring Security form-based login
-    const formData = new URLSearchParams();
-    formData.append('username', credentials.username);
-    formData.append('password', credentials.password);
 
-    const response = await api.post('/login', formData, {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      withCredentials: true, // Include cookies for session
+  // Use backend JSON login endpoint and expect token + user payload
+  login: async (credentials) => {
+    const response = await api.post('/auth/login', {
+      email: credentials.email,
+      password: credentials.password,
     });
-    
-    // Store session/token if provided
-    if (response.data.token) {
+
+    if (response.data?.token) {
       localStorage.setItem('token', response.data.token);
     }
-    if (response.data.user) {
+    if (response.data?.user) {
       localStorage.setItem('user', JSON.stringify(response.data.user));
     }
+
     return response.data;
   },
 
@@ -42,7 +37,8 @@ const authService = {
   },
 
   getCurrentUser: () => {
-    return JSON.parse(localStorage.getItem('user'));
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
   },
 
   isAuthenticated: () => {
