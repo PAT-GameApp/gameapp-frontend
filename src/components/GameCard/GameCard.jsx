@@ -1,14 +1,16 @@
 import './GameCard.css';
 
-const GameCard = ({ name, icon, description }) => {
+const GameCard = ({ name, players }) => {
   return (
     <div className="game-card">
-      <div className="game-card-image">
-        <span className="game-icon">{icon}</span>
+      <div className="game-card-header">
+        <h3 className="game-name">{name}</h3>
       </div>
       <div className="game-card-content">
-        <h3 className="game-name">{name}</h3>
-        <p className="game-description">{description}</p>
+        <div className="game-players">
+          <span className="players-icon">👥</span>
+          <span className="players-count">{players} Players</span>
+        </div>
       </div>
     </div>
   );

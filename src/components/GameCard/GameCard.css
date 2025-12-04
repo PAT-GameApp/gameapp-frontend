@@ -12,30 +12,34 @@
   box-shadow: 0 8px 20px rgba(0, 51, 160, 0.15);
 }
 
-.game-card-image {
-  height: 160px;
+.game-card-header {
   background: linear-gradient(135deg, #0033A0 0%, #0066CC 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 20px 16px;
 }
 
-.game-icon {
-  font-size: 4rem;
+.game-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
 }
 
 .game-card-content {
   padding: 16px;
 }
 
-.game-name {
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #1a1a1a;
-  margin-bottom: 4px;
+.game-players {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
 }
 
-.game-description {
-  font-size: 0.9rem;
-  color: #666;
+.players-icon {
+  font-size: 1.2rem;
+}
+
+.players-count {
+  font-size: 0.95rem;
+  font-weight: 500;
 }

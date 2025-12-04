@@ -38,13 +38,25 @@
   gap: 24px;
 }
 
+.games-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 48px 24px;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.games-message p {
+  margin: 0;
+}
+
 @media (max-width: 768px) {
   .games-header {
     flex-direction: column;
     gap: 16px;
     text-align: center;
   }
-  
+
   .games-grid {
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 16px;
