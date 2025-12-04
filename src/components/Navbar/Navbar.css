@@ -29,6 +29,11 @@
 .navbar-right {
   display: flex;
   align-items: center;
+  gap: 12px;
+}
+
+.navbar-right a {
+  text-decoration: none;
 }
 
 .login-btn {
@@ -45,4 +50,37 @@
 
 .login-btn:hover {
   background-color: #002880;
+}
+
+.register-btn {
+  background-color: #ffffff;
+  color: #0033A0;
+  border: 2px solid #0033A0;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.register-btn:hover {
+  background-color: #0033A0;
+  color: white;
+}
+
+.admin-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.admin-btn:hover {
+  background-color: #218838;
 }
