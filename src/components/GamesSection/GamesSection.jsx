@@ -1,14 +1,18 @@
-import { useQuery } from '@tanstack/react-query';
-import { getGamesByLocation } from '../../services/api';
-import useLocationStore from '../../store/useLocationStore';
-import GameCard from '../GameCard/GameCard';
-import './GamesSection.css';
+import { useQuery } from "@tanstack/react-query";
+import { getGamesByLocation } from "../../services/api";
+import useLocationStore from "../../store/useLocationStore";
+import GameCard from "../GameCard/GameCard";
+import "./GamesSection.css";
 
 const GamesSection = () => {
   const selectedLocation = useLocationStore((state) => state.selectedLocation);
 
-  const { data: games, isLoading, isError } = useQuery({
-    queryKey: ['games', selectedLocation],
+  const {
+    data: games,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["games", selectedLocation],
     queryFn: () => getGamesByLocation(selectedLocation),
     enabled: !!selectedLocation, // Only fetch when location is selected
   });
@@ -36,9 +40,9 @@ const GamesSection = () => {
           ) : games && games.length > 0 ? (
             games.map((game) => (
               <GameCard
-                key={game.game_id}
-                name={game.game_name}
-                players={game.game_numPlayers}
+                key={game.gameId}
+                name={game.gameName}
+                players={game.numberOfPlayers}
               />
             ))
           ) : (
