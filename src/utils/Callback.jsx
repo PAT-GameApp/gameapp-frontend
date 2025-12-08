@@ -35,6 +35,13 @@ export default function Callback() {
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("id_token", data.id_token);
 
+        // Decode JWT to extract userId
+        const tokenPayload = data.access_token.split('.')[1];
+        const decodedPayload = JSON.parse(atob(tokenPayload));
+        if (decodedPayload.userId) {
+          localStorage.setItem("userId", decodedPayload.userId);
+        }
+
         navigate("/"); // redirect to your app home
       } catch (err) {
         console.error(err);

@@ -1,11 +1,17 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getGamesByLocation } from "../../services/api";
 import useLocationStore from "../../store/useLocationStore";
 import GameCard from "../GameCard/GameCard";
+import BookingModal from "../BookingModal/BookingModal";
 import "./GamesSection.css";
 
 const GamesSection = () => {
+  const navigate = useNavigate();
   const selectedLocation = useLocationStore((state) => state.selectedLocation);
+  const [selectedGame, setSelectedGame] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const {
     data: games,
@@ -16,6 +22,30 @@ const GamesSection = () => {
     queryFn: () => getGamesByLocation(selectedLocation),
     enabled: !!selectedLocation, // Only fetch when location is selected
   });
+
+  const handleBookClick = (game) => {
+    // Check if user is logged in
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      // Redirect to login if not authenticated
+      navigate("/login");
+      return;
+    }
+
+    // Show booking modal
+    setSelectedGame(game);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedGame(null);
+  };
+
+  const handleBookingSuccess = () => {
+    // Optionally show a success message or notification
+    console.log("Booking created successfully!");
+  };
 
   return (
     <section className="games-section">
@@ -41,8 +71,11 @@ const GamesSection = () => {
             games.map((game) => (
               <GameCard
                 key={game.gameId}
+                gameId={game.gameId}
                 name={game.gameName}
                 players={game.numberOfPlayers}
+                location={selectedLocation}
+                onBookClick={handleBookClick}
               />
             ))
           ) : (
@@ -52,6 +85,16 @@ const GamesSection = () => {
           )}
         </div>
       </div>
+
+      {showModal && selectedGame && (
+        <BookingModal
+          game={selectedGame}
+          location={selectedLocation}
+          userId={localStorage.getItem("userId")}
+          onClose={handleCloseModal}
+          onSuccess={handleBookingSuccess}
+        />
+      )}
     </section>
   );
 };
