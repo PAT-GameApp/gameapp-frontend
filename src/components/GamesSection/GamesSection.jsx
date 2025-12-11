@@ -18,8 +18,8 @@ const GamesSection = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["games", selectedLocation],
-    queryFn: () => getGamesByLocation(selectedLocation),
+    queryKey: ["games", selectedLocation?.city],
+    queryFn: () => getGamesByLocation(selectedLocation?.city),
     enabled: !!selectedLocation, // Only fetch when location is selected
   });
 
@@ -74,7 +74,7 @@ const GamesSection = () => {
                 gameId={game.gameId}
                 name={game.gameName}
                 players={game.numberOfPlayers}
-                location={selectedLocation}
+                location={game.location?.city}
                 onBookClick={handleBookClick}
               />
             ))

@@ -67,6 +67,8 @@ const BookingsManagement = ({ selectedLocation }) => {
 
     const pendingBookings = filteredBookings.filter((b) => !b.allotmentId);
     const allottedBookings = filteredBookings.filter((b) => b.allotmentId);
+    //debug
+    console.log("Pending Bookings:", pendingBookings);
 
     if (isLoadingBookings) {
         return (
@@ -124,7 +126,8 @@ const BookingsManagement = ({ selectedLocation }) => {
                                     <th>User ID</th>
                                     <th>Game</th>
                                     <th>Location</th>
-                                    <th>Created At</th>
+                                    <th>From</th>
+                                    <th>To</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -135,7 +138,8 @@ const BookingsManagement = ({ selectedLocation }) => {
                                         <td>User #{booking.userId}</td>
                                         <td>{getGameName(booking.gameId)}</td>
                                         <td>{booking.bookingLocation}</td>
-                                        <td>{formatDate(booking.createdAt)}</td>
+                                        <td>{formatDate(booking.bookingStartTime)}</td>
+                                        <td>{formatDate(booking.bookingEndTime)}</td>
                                         <td>
                                             <button
                                                 className="admin-btn-success"
@@ -172,7 +176,8 @@ const BookingsManagement = ({ selectedLocation }) => {
                                     <th>User ID</th>
                                     <th>Game</th>
                                     <th>Location</th>
-                                    <th>Allotted At</th>
+                                    <th>From</th>
+                                    <th>To</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -187,7 +192,8 @@ const BookingsManagement = ({ selectedLocation }) => {
                                         <td>User #{booking.userId}</td>
                                         <td>{getGameName(booking.gameId)}</td>
                                         <td>{booking.bookingLocation}</td>
-                                        <td>{formatDate(booking.modifiedAt)}</td>
+                                        <td>{formatDate(booking.bookingStartTime)}</td>
+                                        <td>{formatDate(booking.bookingEndTime)}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -236,8 +242,12 @@ const BookingsManagement = ({ selectedLocation }) => {
                                     User #{booking.userId}
                                 </div>
                                 <div className="card-detail">
-                                    <span className="card-detail-icon">📅</span>
-                                    {formatDate(booking.createdAt)}
+                                    <span className="card-detail-icon">�</span>
+                                    From: {formatDate(booking.bookingStartTime)}
+                                </div>
+                                <div className="card-detail">
+                                    <span className="card-detail-icon">🕑</span>
+                                    To: {formatDate(booking.bookingEndTime)}
                                 </div>
                                 {booking.allotmentId && (
                                     <div className="card-detail" style={{ color: "#28a745", fontWeight: "600" }}>

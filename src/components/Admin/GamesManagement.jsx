@@ -2,14 +2,14 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getAllGames, getGamesByLocation, createGame } from "../../services/api";
 
-const GamesManagement = ({ selectedLocation }) => {
+const GamesManagement = ({ selectedLocation, locations }) => {
   const queryClient = useQueryClient();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [activeTab, setActiveTab] = useState("view");
   const [formData, setFormData] = useState({
     gameName: "",
     gameInfo: "",
-    gameLocation: "",
+    locationId: "",
     gameFloor: "",
     numberOfPlayers: "",
   });
@@ -21,8 +21,8 @@ const GamesManagement = ({ selectedLocation }) => {
     isError,
     error,
   } = useQuery({
-    queryKey: ["games", selectedLocation],
-    queryFn: () => selectedLocation ? getGamesByLocation(selectedLocation) : getAllGames(),
+    queryKey: ["games", selectedLocation?.city],
+    queryFn: () => selectedLocation ? getGamesByLocation(selectedLocation.city) : getAllGames(),
   });
 
   // Create game mutation
@@ -33,7 +33,7 @@ const GamesManagement = ({ selectedLocation }) => {
       setFormData({
         gameName: "",
         gameInfo: "",
-        gameLocation: "",
+        locationId: "",
         gameFloor: "",
         numberOfPlayers: "",
       });
@@ -57,6 +57,7 @@ const GamesManagement = ({ selectedLocation }) => {
     createGameMutation.mutate({
       ...formData,
       gameFloor: formData.gameFloor,
+      locationId: parseInt(formData.locationId),
       numberOfPlayers: parseInt(formData.numberOfPlayers),
     });
   };
@@ -147,7 +148,7 @@ const GamesManagement = ({ selectedLocation }) => {
                     <td>
                       <strong>{game.gameName}</strong>
                     </td>
-                    <td>{game.gameLocation}</td>
+                    <td>{game.location?.city}</td>
                     <td>Floor {game.gameFloor}</td>
                     <td>{game.numberOfPlayers} players</td>
                     <td>{game.gameInfo || "—"}</td>
@@ -176,7 +177,7 @@ const GamesManagement = ({ selectedLocation }) => {
                 </div>
                 <div className="card-detail">
                   <span className="card-detail-icon">📍</span>
-                  {game.gameLocation}
+                  {game.location?.city}
                 </div>
                 <div className="card-detail">
                   <span className="card-detail-icon">🏢</span>
@@ -229,15 +230,20 @@ const GamesManagement = ({ selectedLocation }) => {
               </div>
               <div className="form-group">
                 <label className="form-label">Game Location *</label>
-                <input
-                  type="text"
-                  name="gameLocation"
+                <select
+                  name="locationId"
                   className="form-input"
-                  placeholder="e.g., Coimbatore"
-                  value={formData.gameLocation}
+                  value={formData.locationId}
                   onChange={handleInputChange}
                   required
-                />
+                >
+                  <option value="">Select Location</option>
+                  {locations && locations.map((loc) => (
+                    <option key={loc.locationId} value={loc.locationId}>
+                      {loc.city}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="form-group">
                 <label className="form-label">Floor *</label>

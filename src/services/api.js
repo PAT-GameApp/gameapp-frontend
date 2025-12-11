@@ -29,12 +29,12 @@ apiClient.interceptors.request.use(
 
 // --- Location APIs ---
 export const getLocations = async () => {
-  const response = await apiClient.get("/games/locations");
+  const response = await apiClient.get("/locations");
   return response.data;
 };
 
-export const getGamesByLocation = async (location) => {
-  const response = await apiClient.get(`/games/locations/${location}`);
+export const getGamesByLocation = async (city) => {
+  const response = await apiClient.get(`/games/locations/${city}`);
   return response.data;
 };
 

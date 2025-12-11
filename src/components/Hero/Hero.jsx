@@ -43,7 +43,7 @@ const Hero = () => {
             >
               <span className="location-icon">📍</span>
               <span className="location-text">
-                {isLoading ? 'Loading...' : isError ? 'Error loading' : selectedLocation || 'Select a location'}
+                {isLoading ? 'Loading...' : isError ? 'Error loading' : selectedLocation?.city || 'Select a location'}
               </span>
               <span className={`dropdown-icon ${isDropdownOpen ? 'open' : ''}`}>▼</span>
             </div>
@@ -52,12 +52,12 @@ const Hero = () => {
               <div className="location-dropdown">
                 {locations.map((location) => (
                   <div
-                    key={location}
-                    className={`location-option ${location === selectedLocation ? 'selected' : ''}`}
+                    key={location.locationId}
+                    className={`location-option ${location.locationId === selectedLocation?.locationId ? 'selected' : ''}`}
                     onClick={() => handleLocationSelect(location)}
                   >
                     <span className="location-icon"></span>
-                    <span>{location}</span>
+                    <span>{location.city}</span>
                   </div>
                 ))}
               </div>

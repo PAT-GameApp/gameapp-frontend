@@ -41,13 +41,13 @@ const AdminDashboard = () => {
     const renderSection = () => {
         switch (activeSection) {
             case "games":
-                return <GamesManagement selectedLocation={selectedLocation} />;
+                return <GamesManagement selectedLocation={selectedLocation} locations={locations} />;
             case "inventory":
                 return <InventoryManagement selectedLocation={selectedLocation} />;
             case "bookings":
                 return <BookingsManagement selectedLocation={selectedLocation} />;
             default:
-                return <GamesManagement selectedLocation={selectedLocation} />;
+                return <GamesManagement selectedLocation={selectedLocation} locations={locations} />;
         }
     };
 
@@ -72,7 +72,7 @@ const AdminDashboard = () => {
                         >
                             <span className="location-icon">📍</span>
                             <span className="location-text">
-                                {selectedLocation || "All Locations"}
+                                {selectedLocation?.city || "All Locations"}
                             </span>
                             <span className={`dropdown-arrow ${isLocationDropdownOpen ? "open" : ""}`}>
                                 ▼
@@ -92,12 +92,12 @@ const AdminDashboard = () => {
                                 ) : (
                                     locations.map((location) => (
                                         <div
-                                            key={location}
-                                            className={`location-option ${selectedLocation === location ? "selected" : ""}`}
+                                            key={location.locationId}
+                                            className={`location-option ${selectedLocation?.locationId === location.locationId ? "selected" : ""}`}
                                             onClick={() => handleLocationSelect(location)}
                                         >
                                             <span className="option-icon">📍</span>
-                                            {location}
+                                            {location.city}
                                         </div>
                                     ))
                                 )}
