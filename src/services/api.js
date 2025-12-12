@@ -22,19 +22,19 @@ apiClient.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // ==================== API FUNCTIONS ====================
 
 // --- Location APIs ---
 export const getLocations = async () => {
-  const response = await apiClient.get("/locations");
+  const response = await apiClient.get("/locations/");
   return response.data;
 };
 
-export const getGamesByLocation = async (city) => {
-  const response = await apiClient.get(`/games/locations/${city}`);
+export const getGamesByLocation = async (office) => {
+  const response = await apiClient.get(`/games/locations/${office}`);
   return response.data;
 };
 

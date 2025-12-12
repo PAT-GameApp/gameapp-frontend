@@ -1,67 +1,37 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { getLocations } from '../../services/api';
+import LocationModal from '../LocationModal/LocationModal';
 import useLocationStore from '../../store/useLocationStore';
 import './Hero.css';
 
 const Hero = () => {
   const selectedLocation = useLocationStore((state) => state.selectedLocation);
   const setSelectedLocation = useLocationStore((state) => state.setSelectedLocation);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { data: locations, isLoading, isError } = useQuery({
-    queryKey: ['locations'],
-    queryFn: getLocations,
-  });
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const handleLocationSelect = (location) => {
-    setSelectedLocation(location);
-    setIsDropdownOpen(false);
-  };
 
   return (
     <section className="hero">
       <div className="hero-container">
         <div className="hero-content">
-          <div className="location-selector-wrapper" ref={dropdownRef}>
+          <div className="location-selector-wrapper">
             <div
               className="location-selector"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              onClick={() => setIsModalOpen(true)}
             >
               <span className="location-icon">📍</span>
               <span className="location-text">
-                {isLoading ? 'Loading...' : isError ? 'Error loading' : selectedLocation?.city || 'Select a location'}
+                {selectedLocation ? `${selectedLocation.office}, ${selectedLocation.city}` : 'Select a location'}
               </span>
-              <span className={`dropdown-icon ${isDropdownOpen ? 'open' : ''}`}>▼</span>
+              <span className="dropdown-icon">▼</span>
             </div>
 
-            {isDropdownOpen && !isLoading && !isError && locations && (
-              <div className="location-dropdown">
-                {locations.map((location) => (
-                  <div
-                    key={location.locationId}
-                    className={`location-option ${location.locationId === selectedLocation?.locationId ? 'selected' : ''}`}
-                    onClick={() => handleLocationSelect(location)}
-                  >
-                    <span className="location-icon"></span>
-                    <span>{location.city}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+            <LocationModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+            />
           </div>
 
           <h1 className="hero-title">

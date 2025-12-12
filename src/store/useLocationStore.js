@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 const useLocationStore = create((set) => ({
-    selectedLocation: null,
+    selectedLocation: null, // { locationId, country, city, office }
     setSelectedLocation: (location) => set({ selectedLocation: location }),
 }));
 

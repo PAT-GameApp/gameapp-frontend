@@ -1,53 +1,28 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import Navbar from "../../components/Navbar/Navbar";
 import GamesManagement from "../../components/Admin/GamesManagement";
 import InventoryManagement from "../../components/Admin/InventoryManagement";
 import BookingsManagement from "../../components/Admin/BookingsManagement";
 import useLocationStore from "../../store/useLocationStore";
-import { getLocations } from "../../services/api";
+import LocationModal from "../../components/LocationModal/LocationModal";
 import "./AdminDashboard.css";
 
 const AdminDashboard = () => {
     const [activeSection, setActiveSection] = useState("games");
-    const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
-    const dropdownRef = useRef(null);
-
+    const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
     const selectedLocation = useLocationStore((state) => state.selectedLocation);
-    const setSelectedLocation = useLocationStore((state) => state.setSelectedLocation);
-
-    // Fetch locations for the dropdown
-    const { data: locations = [], isLoading: isLoadingLocations } = useQuery({
-        queryKey: ["locations"],
-        queryFn: getLocations,
-    });
-
-    // Close dropdown when clicking outside
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setIsLocationDropdownOpen(false);
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
-
-    const handleLocationSelect = (location) => {
-        setSelectedLocation(location);
-        setIsLocationDropdownOpen(false);
-    };
 
     const renderSection = () => {
         switch (activeSection) {
             case "games":
-                return <GamesManagement selectedLocation={selectedLocation} locations={locations} />;
+                return <GamesManagement selectedLocation={selectedLocation} />;
             case "inventory":
                 return <InventoryManagement selectedLocation={selectedLocation} />;
             case "bookings":
                 return <BookingsManagement selectedLocation={selectedLocation} />;
             default:
-                return <GamesManagement selectedLocation={selectedLocation} locations={locations} />;
+                return <GamesManagement selectedLocation={selectedLocation} />;
         }
     };
 
@@ -65,44 +40,21 @@ const AdminDashboard = () => {
                     </div>
 
                     {/* Location Selector in Sidebar */}
-                    <div className="sidebar-location-wrapper" ref={dropdownRef}>
+                    <div className="sidebar-location-wrapper">
                         <button
                             className="sidebar-location-selector"
-                            onClick={() => setIsLocationDropdownOpen(!isLocationDropdownOpen)}
+                            onClick={() => setIsLocationModalOpen(true)}
                         >
                             <span className="location-icon">📍</span>
                             <span className="location-text">
-                                {selectedLocation?.city || "All Locations"}
+                                {selectedLocation ? `${selectedLocation.office}, ${selectedLocation.city}` : "Select Location"}
                             </span>
-                            <span className={`dropdown-arrow ${isLocationDropdownOpen ? "open" : ""}`}>
-                                ▼
-                            </span>
+                            <span className="dropdown-arrow">▼</span>
                         </button>
-                        {isLocationDropdownOpen && (
-                            <div className="sidebar-location-dropdown">
-                                <div
-                                    className={`location-option ${!selectedLocation ? "selected" : ""}`}
-                                    onClick={() => handleLocationSelect(null)}
-                                >
-                                    <span className="option-icon">🌐</span>
-                                    All Locations
-                                </div>
-                                {isLoadingLocations ? (
-                                    <div className="location-option loading">Loading...</div>
-                                ) : (
-                                    locations.map((location) => (
-                                        <div
-                                            key={location.locationId}
-                                            className={`location-option ${selectedLocation?.locationId === location.locationId ? "selected" : ""}`}
-                                            onClick={() => handleLocationSelect(location)}
-                                        >
-                                            <span className="option-icon">📍</span>
-                                            {location.city}
-                                        </div>
-                                    ))
-                                )}
-                            </div>
-                        )}
+                        <LocationModal
+                            isOpen={isLocationModalOpen}
+                            onClose={() => setIsLocationModalOpen(false)}
+                        />
                     </div>
 
                     <nav className="sidebar-nav">
