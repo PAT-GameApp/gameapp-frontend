@@ -33,8 +33,8 @@ export const getLocations = async () => {
   return response.data;
 };
 
-export const getGamesByLocation = async (office) => {
-  const response = await apiClient.get(`/games/locations/${office}`);
+export const getGamesByLocation = async (locationId) => {
+  const response = await apiClient.get(`/games/locations/${locationId}`);
   return response.data;
 };
 

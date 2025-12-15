@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getAllGames, getGamesByLocation, createGame } from "../../services/api";
+import { getAllGames, getGamesByLocation, createGame, getLocations } from "../../services/api";
 
-const GamesManagement = ({ selectedLocation, locations }) => {
+const GamesManagement = ({ selectedLocation }) => {
   const queryClient = useQueryClient();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [activeTab, setActiveTab] = useState("view");
@@ -14,6 +14,41 @@ const GamesManagement = ({ selectedLocation, locations }) => {
     numberOfPlayers: "",
   });
 
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+
+  // Fetch locations
+  const { data: locations = [] } = useQuery({
+    queryKey: ["locations"],
+    queryFn: getLocations,
+  });
+
+  // Extract unique countries
+  const countries = useMemo(() => {
+    if (!locations) return [];
+    return [...new Set(locations.map((loc) => loc.country))].sort();
+  }, [locations]);
+
+  // Extract cities for selected country
+  const cities = useMemo(() => {
+    if (!selectedCountry || !locations) return [];
+    return [
+      ...new Set(
+        locations
+          .filter((loc) => loc.country === selectedCountry)
+          .map((loc) => loc.city)
+      ),
+    ].sort();
+  }, [locations, selectedCountry]);
+
+  // Extract offices for selected city
+  const offices = useMemo(() => {
+    if (!selectedCity || !locations) return [];
+    return locations
+      .filter((loc) => loc.city === selectedCity)
+      .sort((a, b) => a.office.localeCompare(b.office));
+  }, [locations, selectedCity]);
+
   // Fetch games using React Query - conditionally by location
   const {
     data: games = [],
@@ -21,8 +56,8 @@ const GamesManagement = ({ selectedLocation, locations }) => {
     isError,
     error,
   } = useQuery({
-    queryKey: ["games", selectedLocation?.city],
-    queryFn: () => selectedLocation ? getGamesByLocation(selectedLocation.city) : getAllGames(),
+    queryKey: ["games", selectedLocation?.locationId],
+    queryFn: () => (selectedLocation && selectedLocation.locationId) ? getGamesByLocation(selectedLocation.locationId) : getAllGames(),
   });
 
   // Create game mutation
@@ -38,11 +73,24 @@ const GamesManagement = ({ selectedLocation, locations }) => {
         numberOfPlayers: "",
       });
       setShowCreateModal(false);
+      setSelectedCountry("");
+      setSelectedCity("");
     },
     onError: (error) => {
       console.error("Failed to create game:", error);
     },
   });
+
+  const handleCountryChange = (e) => {
+    setSelectedCountry(e.target.value);
+    setSelectedCity("");
+    setFormData((prev) => ({ ...prev, locationId: "" }));
+  };
+
+  const handleCityChange = (e) => {
+    setSelectedCity(e.target.value);
+    setFormData((prev) => ({ ...prev, locationId: "" }));
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -228,23 +276,61 @@ const GamesManagement = ({ selectedLocation, locations }) => {
                   required
                 />
               </div>
+
               <div className="form-group">
-                <label className="form-label">Game Location *</label>
+                <label className="form-label">Country *</label>
+                <select
+                  className="form-input"
+                  value={selectedCountry}
+                  onChange={handleCountryChange}
+                  required
+                >
+                  <option value="">Select Country</option>
+                  {countries.map((country) => (
+                    <option key={country} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">City *</label>
+                <select
+                  className="form-input"
+                  value={selectedCity}
+                  onChange={handleCityChange}
+                  disabled={!selectedCountry}
+                  required
+                >
+                  <option value="">Select City</option>
+                  {cities.map((city) => (
+                    <option key={city} value={city}>
+                      {city}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Office *</label>
                 <select
                   name="locationId"
                   className="form-input"
                   value={formData.locationId}
                   onChange={handleInputChange}
+                  disabled={!selectedCity}
                   required
                 >
-                  <option value="">Select Location</option>
-                  {locations && locations.map((loc) => (
+                  <option value="">Select Office</option>
+                  {offices.map((loc) => (
                     <option key={loc.locationId} value={loc.locationId}>
-                      {loc.city}
+                      {loc.office}
                     </option>
                   ))}
                 </select>
               </div>
+
               <div className="form-group">
                 <label className="form-label">Floor *</label>
                 <input
@@ -299,9 +385,9 @@ const GamesManagement = ({ selectedLocation, locations }) => {
               </div>
             </form>
           </div>
-        </div>
+        </div >
       )}
-    </div>
+    </div >
   );
 };
 

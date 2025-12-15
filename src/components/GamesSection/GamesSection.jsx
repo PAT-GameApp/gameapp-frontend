@@ -18,8 +18,8 @@ const GamesSection = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["games", selectedLocation?.office],
-    queryFn: () => getGamesByLocation(selectedLocation?.office),
+    queryKey: ["games", selectedLocation?.locationId],
+    queryFn: () => getGamesByLocation(selectedLocation?.locationId),
     enabled: !!selectedLocation, // Only fetch when location is selected
   });
 
