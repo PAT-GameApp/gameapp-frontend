@@ -46,6 +46,27 @@ const Hero = () => {
             Cognizant's Sports Community to Book Game Tables,
             Find Players, and Join Games at your Office.
           </p>
+
+          <button
+            className="hero-cta-button"
+            onClick={() => window.location.href = '/dashboard'}
+            style={{
+              padding: '12px 24px',
+              fontSize: '1rem',
+              fontWeight: '600',
+              color: '#fff',
+              backgroundColor: '#0033A0',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              marginTop: '20px',
+              transition: 'background-color 0.2s'
+            }}
+            onMouseOver={(e) => e.target.style.backgroundColor = '#002880'}
+            onMouseOut={(e) => e.target.style.backgroundColor = '#0033A0'}
+          >
+            My Bookings
+          </button>
         </div>
 
         <div className="hero-images">

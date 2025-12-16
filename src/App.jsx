@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import { useEffect } from "react";
 import HomePage from "./pages/HomePage/HomePage";
 import AdminDashboard from "./pages/AdminDashboard/AdminDashboard";
+import UserDashboard from "./pages/UserDashboard/UserDashboard";
 import Callback from "./utils/Callback";
 import "./App.css";
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/login" element={<LoginRedirect />} />
         <Route path="/register" element={<RegisterRedirect />} />
         <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/dashboard" element={<UserDashboard />} />
         <Route path="/callback" element={<Callback />} />
       </Routes>
     </Router>
