@@ -25,7 +25,7 @@ const InventoryManagement = ({ selectedLocation }) => {
     // Fetch games for the dropdown - conditionally by location
     const { data: games = [] } = useQuery({
         queryKey: ["games", selectedLocation],
-        queryFn: () => selectedLocation ? getGamesByLocation(selectedLocation) : getAllGames(),
+        queryFn: () => (selectedLocation && selectedLocation.locationId) ? getGamesByLocation(selectedLocation.locationId) : getAllGames(),
     });
 
     // Filter equipment based on games at the selected location

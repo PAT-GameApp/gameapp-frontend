@@ -1,6 +1,6 @@
 import './GameCard.css';
 
-const GameCard = ({ gameId, name, players, location, onBookClick }) => {
+const GameCard = ({ gameId, name, players, location, floor, onBookClick }) => {
   const handleBookClick = (e) => {
     e.stopPropagation();
     onBookClick?.({ gameId, gameName: name, numberOfPlayers: players });
@@ -16,6 +16,12 @@ const GameCard = ({ gameId, name, players, location, onBookClick }) => {
           <span className="players-icon">👥</span>
           <span className="players-count">{players} Players</span>
         </div>
+        {floor && (
+          <div className="game-floor">
+            <span className="floor-icon">🏢</span>
+            <span className="floor-text">{floor}</span>
+          </div>
+        )}
         <button className="book-now-btn" onClick={handleBookClick}>
           Book Now
         </button>

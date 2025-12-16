@@ -21,13 +21,13 @@ const BookingsManagement = ({ selectedLocation }) => {
     // Fetch games for display - conditionally by location
     const { data: games = [] } = useQuery({
         queryKey: ["games", selectedLocation],
-        queryFn: () => selectedLocation ? getGamesByLocation(selectedLocation) : getAllGames(),
+        queryFn: () => (selectedLocation && selectedLocation.locationId) ? getGamesByLocation(selectedLocation.locationId) : getAllGames(),
     });
 
     // Filter bookings by selected location
     const filteredBookings = useMemo(() => {
         if (!selectedLocation) return bookings;
-        return bookings.filter(booking => booking.bookingLocation === selectedLocation);
+        return bookings.filter(booking => String(booking.locationId) === String(selectedLocation.locationId));
     }, [bookings, selectedLocation]);
 
     // Allot booking mutation

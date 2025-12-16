@@ -83,3 +83,10 @@ export const allotBooking = async (bookingId) => {
   const response = await apiClient.post(`/bookings/${bookingId}/allot`);
   return response.data;
 };
+
+// --- Allotment APIs ---
+// GET allotment by ID
+export const getAllotmentById = async (allotmentId) => {
+  const response = await apiClient.get(`/allotments/${allotmentId}`);
+  return response.data;
+};

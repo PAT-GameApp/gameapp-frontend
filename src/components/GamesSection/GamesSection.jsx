@@ -75,6 +75,7 @@ const GamesSection = () => {
                 name={game.gameName}
                 players={game.numberOfPlayers}
                 location={game.location?.city}
+                floor={game.gameFloor}
                 onBookClick={handleBookClick}
               />
             ))
