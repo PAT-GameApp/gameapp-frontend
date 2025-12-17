@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import useAuthStore from "../store/useAuthStore";
 
 export default function Callback() {
   const [params] = useSearchParams();
@@ -35,11 +36,17 @@ export default function Callback() {
         localStorage.setItem("access_token", data.access_token);
         localStorage.setItem("id_token", data.id_token);
 
+        // Update Zustand store
+        useAuthStore.getState().login();
+
         // Decode JWT to extract userId
         const tokenPayload = data.access_token.split('.')[1];
         const decodedPayload = JSON.parse(atob(tokenPayload));
         if (decodedPayload.userId) {
           localStorage.setItem("userId", decodedPayload.userId);
+        }
+        if (decodedPayload.role) {
+          localStorage.setItem("role", decodedPayload.role);
         }
 
         navigate("/"); // redirect to your app home
