@@ -10,10 +10,13 @@ const BookingModal = ({ game, location, userId, onClose, onSuccess }) => {
     const [playerIds, setPlayerIds] = useState(Array(game.numberOfPlayers).fill(''));
     const [selectedEquipmentId, setSelectedEquipmentId] = useState('');
 
-    const { data: equipmentList = [] } = useQuery({
+    const { data: equipmentData } = useQuery({
         queryKey: ['equipment'],
         queryFn: getAllEquipment,
     });
+
+    // Ensure equipmentList is always an array
+    const equipmentList = Array.isArray(equipmentData) ? equipmentData : [];
 
     const queryClient = useQueryClient();
 

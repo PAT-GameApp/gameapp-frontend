@@ -13,7 +13,7 @@ const InventoryManagement = ({ selectedLocation }) => {
 
     // Fetch equipment using React Query
     const {
-        data: inventory = [],
+        data: inventoryData,
         isLoading: isLoadingInventory,
         isError: isErrorInventory,
         error: inventoryError,
@@ -22,11 +22,17 @@ const InventoryManagement = ({ selectedLocation }) => {
         queryFn: getAllEquipment,
     });
 
+    // Ensure inventory is always an array
+    const inventory = Array.isArray(inventoryData) ? inventoryData : [];
+
     // Fetch games for the dropdown - conditionally by location
-    const { data: games = [] } = useQuery({
+    const { data: gamesData } = useQuery({
         queryKey: ["games", selectedLocation],
         queryFn: () => (selectedLocation && selectedLocation.locationId) ? getGamesByLocation(selectedLocation.locationId) : getAllGames(),
     });
+
+    // Ensure games is always an array
+    const games = Array.isArray(gamesData) ? gamesData : [];
 
     // Filter equipment based on games at the selected location
     const filteredInventory = useMemo(() => {
