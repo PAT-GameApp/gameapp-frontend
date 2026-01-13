@@ -11,6 +11,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { isLoggedIn, role, logout } = useAuthStore();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [hasNotifications, setHasNotifications] = useState(false); // Track if there are notifications
 
   const isAdmin = role === "ADMIN";
   const isUser = role === "USER";
@@ -39,9 +40,7 @@ const Navbar = () => {
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
           <span className="logo-text">Cognizant</span>
-        </Link>
-
-        <div className="navbar-right">
+        </Link>        <div className="navbar-right">
           {!isLoggedIn ? (
             <>
               <button
@@ -58,10 +57,23 @@ const Navbar = () => {
               </button>
             </>
           ) : (
-            <div className="profile-menu">
-              <button className="profile-btn" onClick={toggleDropdown}>
-                Profile
+            <>              {/* Notification icon - only show after login */}
+              <button
+                className="navbar-icon-btn"
+                aria-label="Notifications"
+                onClick={() => {
+                  console.log("Notifications clicked");
+                  setHasNotifications(false); // Clear notification badge when clicked
+                }}
+              >
+                <span className="bell-icon">🔔</span>
+                {hasNotifications && <span className="notification-badge"></span>}
               </button>
+
+              <div className="profile-menu">
+                <button className="profile-btn" onClick={toggleDropdown}>
+                  Profile
+                </button>
               {showDropdown && (
                 <div className="dropdown">
                   {isAdmin && (
@@ -80,9 +92,9 @@ const Navbar = () => {
                       Logout
                     </button>
                   )}
-                </div>
-              )}
-            </div>
+                </div>              )}
+              </div>
+            </>
           )}
         </div>
       </div>

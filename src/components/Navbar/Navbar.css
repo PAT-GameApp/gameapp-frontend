@@ -37,6 +37,41 @@
   align-items: center;
 }
 
+/* Notification icon button */
+.navbar-icon-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-icon-btn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.bell-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+/* Small red notification badge */
+.notification-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  background-color: #ff3b3b;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
 .login-btn,
 .register-btn, 
 .profile-btn {
