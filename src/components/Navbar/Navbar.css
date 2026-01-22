@@ -8,6 +8,11 @@
 }
 
 .navbar-container {
+<<<<<<< Updated upstream
+=======
+  max-width: 1280px;
+  margin: 0 auto;
+>>>>>>> Stashed changes
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -46,3 +51,111 @@
 .login-btn:hover {
   background-color: #002880;
 }
+<<<<<<< Updated upstream
+=======
+
+.register-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
+}
+
+.register-btn:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+}
+
+/* Profile Dropdown Styles */
+.profile-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-btn {
+  background-color: var(--primary-color); /* Match register button or choose distinct */
+  color: white;
+  border: none;
+}
+
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%; /* Position below the button */
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 100; /* Ensure it stays above other content */
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.dropdown-item {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+
+/* Notifications dropdown (simple MVP) */
+.notifications-dropdown {
+  position: absolute;
+  right: 90px;
+  top: 70px;
+  width: 320px;
+  background: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+  z-index: 200;
+}
+
+.notifications-header {
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.notifications-empty {
+  padding: 1rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.notifications-list {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.notifications-item {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.notifications-item:last-child {
+  border-bottom: none;
+}
+
+.notifications-message.success {
+  color: #1a7f37;       /* green */
+  font-weight: 600;
+}
+
+.notifications-time {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.55);
+}
+>>>>>>> Stashed changes
