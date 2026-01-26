@@ -51,39 +51,45 @@ const ChatBot = () => {
 
   return (
     <div className={`chatbot-container ${isOpen ? 'open' : 'closed'}`}>
-      <div className="chatbot-header" onClick={() => setIsOpen(!isOpen)}>
-        <span>🎮 Game Assistant</span>
-        <button className="toggle-btn">{isOpen ? '−' : '+'}</button>
-      </div>
-      
-      {isOpen && (
-        <div className="chatbot-body">
-          <div className="messages-container">
-            {history.length === 0 && (
-              <div className="welcome-msg">
-                Hi! Ask me about games, availability, or your bookings.
-              </div>
-            )}
-            {history.map((msg, index) => (
-              <div key={index} className={`message ${msg.role}`}>
-                <div className="message-content">{msg.content}</div>
-              </div>
-            ))}
-            {isLoading && <div className="message assistant loading">Typing...</div>}
-            <div ref={messagesEndRef} />
+      {!isOpen ? (
+        <div className="chatbot-collapsed-icon" onClick={() => setIsOpen(true)}>
+          <span className="icon">🎮</span>
+        </div>
+      ) : (
+        <>
+          <div className="chatbot-header" onClick={() => setIsOpen(false)}>
+            <span>🎮 Game Assistant</span>
+            <button className="toggle-btn">−</button>
           </div>
           
-          <form className="input-area" onSubmit={handleSend}>
-            <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Ask something..."
-              disabled={isLoading}
-            />
-            <button type="submit" disabled={isLoading}>Send</button>
-          </form>
-        </div>
+          <div className="chatbot-body">
+            <div className="messages-container">
+              {history.length === 0 && (
+                <div className="welcome-msg">
+                  Hi! Ask me about games, availability, or your bookings.
+                </div>
+              )}
+              {history.map((msg, index) => (
+                <div key={index} className={`message ${msg.role}`}>
+                  <div className="message-content">{msg.content}</div>
+                </div>
+              ))}
+              {isLoading && <div className="message assistant loading">Typing...</div>}
+              <div ref={messagesEndRef} />
+            </div>
+            
+            <form className="input-area" onSubmit={handleSend}>
+              <input
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Ask something..."
+                disabled={isLoading}
+              />
+              <button type="submit" disabled={isLoading}>Send</button>
+            </form>
+          </div>
+        </>
       )}
     </div>
   );
