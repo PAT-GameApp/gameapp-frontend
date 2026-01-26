@@ -90,3 +90,9 @@ export const getAllotmentById = async (allotmentId) => {
   const response = await apiClient.get(`/allotments/${allotmentId}`);
   return response.data;
 };
+
+// --- Chat APIs ---
+export const sendChatMessage = async (chatData) => {
+  const response = await apiClient.post("/chat/", chatData);
+  return response.data;
+};
