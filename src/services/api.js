@@ -11,6 +11,14 @@ const apiClient = axios.create({
   },
 });
 
+const chatApiClient = axios.create({
+  baseURL: "http://localhost:8092",
+  headers: {
+    accept: "*/*",
+    "Content-Type": "application/json",
+  },
+});
+
 // Request interceptor to add Authorization header with Bearer token
 apiClient.interceptors.request.use(
   (config) => {
@@ -22,7 +30,21 @@ apiClient.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
+  }
+);
+
+// Request interceptor to add Authorization header with Bearer token
+chatApiClient.interceptors.request.use(
+  (config) => {
+    const accessToken = localStorage.getItem("access_token");
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
   },
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
 // ==================== API FUNCTIONS ====================
@@ -93,6 +115,6 @@ export const getAllotmentById = async (allotmentId) => {
 
 // --- Chat APIs ---
 export const sendChatMessage = async (chatData) => {
-  const response = await apiClient.post("/chat/", chatData);
+  const response = await chatApiClient.post("/chat/", chatData);
   return response.data;
 };
