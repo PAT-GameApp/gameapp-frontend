@@ -1,6 +1,27 @@
 .admin-page {
     min-height: 100vh;
-    background-color: #f8f9fa;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    position: relative;
+    overflow-x: hidden;
+}
+
+.admin-page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(102, 126, 234, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(240, 147, 251, 0.2) 0%, transparent 50%);
+    pointer-events: none;
+    animation: backgroundFloat 20s ease-in-out infinite;
+}
+
+@keyframes backgroundFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -30px) scale(1.05); }
 }
 
 .admin-container {
@@ -8,75 +29,137 @@
     flex-wrap: wrap;
     max-width: 1400px;
     margin: 0 auto;
-    padding: 24px;
-    gap: 24px;
+    padding: 30px;
+    gap: 30px;
     min-height: calc(100vh - 64px);
+    position: relative;
+    z-index: 1;
 }
 
 /* Admin Header */
 .admin-header {
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    padding: 20px 28px;
-    border-radius: 16px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+    backdrop-filter: blur(20px);
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.5);
     margin-bottom: 0;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    background-size: 200% 100%;
+    animation: rainbowShift 3s linear infinite;
+}
+
+@keyframes rainbowShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
 }
 
 .admin-header-title {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #1a1a1a;
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin: 0;
+    letter-spacing: -0.5px;
+    animation: fadeInDown 0.6s ease-out;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Sidebar Location Selector */
 .sidebar-location-wrapper {
     position: relative;
     padding: 0 12px;
-    margin-bottom: 16px;
+    margin-bottom: 35px;
 }
 
 .sidebar-location-selector {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     width: 100%;
-    background: rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-    padding: 12px 14px;
-    border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.25) 0%, rgba(118, 75, 162, 0.2) 100%);
+    color: white;
+    padding: 16px 22px;
+    border-radius: 16px;
+    border: 2px solid rgba(102, 126, 234, 0.4);
     cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
+    font-size: 1.05rem;
+    font-weight: 700;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.sidebar-location-selector::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+    transition: left 0.6s ease;
+}
+
+.sidebar-location-selector:hover::before {
+    left: 100%;
 }
 
 .sidebar-location-selector:hover {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.35) 0%, rgba(118, 75, 162, 0.3) 100%);
+    border-color: rgba(102, 126, 234, 0.6);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.35);
 }
 
 .sidebar-location-selector .location-icon {
-    font-size: 1rem;
+    font-size: 1.4rem;
+    filter: drop-shadow(0 2px 8px rgba(102, 126, 234, 0.5));
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
 }
 
 .sidebar-location-selector .location-text {
     flex: 1;
     text-align: left;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    letter-spacing: 0.3px;
+    position: relative;
+    z-index: 1;
 }
 
 .sidebar-location-selector .dropdown-arrow {
-    font-size: 0.65rem;
-    opacity: 0.8;
-    transition: transform 0.2s ease;
+    font-size: 0.9rem;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    z-index: 1;
+}
+
+.sidebar-location-selector:hover .dropdown-arrow {
+    transform: translateY(3px);
 }
 
 .sidebar-location-selector .dropdown-arrow.open {
@@ -149,74 +232,161 @@
 
 /* Sidebar Styles */
 .admin-sidebar {
-    width: 260px;
-    background: linear-gradient(180deg, #0033A0 0%, #002880 100%);
-    border-radius: 16px;
-    padding: 24px 16px;
-    box-shadow: 0 4px 20px rgba(0, 51, 160, 0.2);
+    width: 320px;
+    background: linear-gradient(135deg, rgba(30, 30, 60, 0.95) 0%, rgba(20, 20, 40, 0.98) 100%);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 35px 25px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.1);
     flex-shrink: 0;
+}
+
+.admin-sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
 }
 
 .sidebar-header {
     padding: 0 12px 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-    margin-bottom: 16px;
+    margin-bottom: 35px;
+    border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+    position: relative;
+}
+
+.sidebar-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    animation: expandWidth 2s ease-in-out infinite;
+}
+
+@keyframes expandWidth {
+    0%, 100% { width: 60px; }
+    50% { width: 120px; }
 }
 
 .sidebar-header h2 {
     color: #ffffff;
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 2rem;
+    font-weight: 900;
     margin: 0;
+    background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.5px;
 }
 
 .sidebar-nav {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 14px;
 }
 
 .sidebar-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    background: transparent;
-    border: none;
-    border-radius: 10px;
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 1rem;
-    font-weight: 500;
+    gap: 14px;
+    padding: 16px 22px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.05rem;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     text-align: left;
     width: 100%;
+    position: relative;
+    overflow: hidden;
+    letter-spacing: 0.3px;
+}
+
+.sidebar-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transition: width 0.4s ease;
+    border-radius: 16px 0 0 16px;
 }
 
 .sidebar-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
+    background: rgba(102, 126, 234, 0.15);
+    color: white;
+    transform: translateX(8px) scale(1.02);
+    border-color: rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.25);
+}
+
+.sidebar-item:hover::before {
+    width: 6px;
 }
 
 .sidebar-item.active {
-    background: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
-    font-weight: 600;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.35) 0%, rgba(118, 75, 162, 0.3) 100%);
+    border-color: rgba(102, 126, 234, 0.6);
+    color: white;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+    transform: translateX(5px);
+}
+
+.sidebar-item.active::before {
+    width: 6px;
 }
 
 .sidebar-icon {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
+    filter: drop-shadow(0 2px 6px rgba(102, 126, 234, 0.4));
+    transition: transform 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.sidebar-item:hover .sidebar-icon {
+    transform: scale(1.15) rotate(5deg);
+}
+
+.sidebar-item.active .sidebar-icon {
+    transform: scale(1.1);
 }
 
 /* Main Content Area */
 .admin-main {
     flex: 1;
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 32px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    overflow-y: auto;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.admin-main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
 }
 
 /* Common Admin Component Styles */
@@ -612,21 +782,31 @@
 
     .admin-sidebar {
         width: 100%;
-        padding: 16px;
+        padding: 24px 16px;
     }
 
     .sidebar-nav {
         flex-direction: row;
         overflow-x: auto;
+        gap: 10px;
     }
 
     .sidebar-item {
         white-space: nowrap;
         padding: 12px 16px;
+        min-width: fit-content;
     }
 
     .admin-main {
-        padding: 20px;
+        padding: 24px 20px;
+    }
+
+    .admin-header {
+        padding: 24px;
+    }
+
+    .admin-header-title {
+        font-size: 1.8rem;
     }
 
     .admin-section-header {

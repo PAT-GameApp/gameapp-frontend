@@ -139,27 +139,30 @@ const UserDashboard = () => {
                 console.error('Error returning equipment:', error);
                 alert('Error returning equipment');
             }
-        };
-
-        const renderBookingTable = (bookingsList, showReturnButton = false) => (
+        };        const renderBookingTable = (bookingsList, showReturnButton = false) => (
             <div className="user-table-container">
                 <table className="user-table">
                     <thead>
                         <tr>
                             <th>Booking ID</th>
                             <th>Game</th>
-                            <th>Location</th>
+                            <th>Floor</th>
                             <th>Start Time</th>
                             <th>End Time</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {bookingsList.map((booking) => (
+                        {bookingsList.map((booking) => {
+                            // Get game details to access floor
+                            const game = games.find((g) => g.gameId === booking.gameId);
+                            const gameFloor = game?.gameFloor || 'N/A';
+                            
+                            return (
                             <tr key={booking.bookingId}>
                                 <td><strong>#{booking.bookingId}</strong></td>
                                 <td>{getGameName(booking.gameId)}</td>
-                                <td>{booking.bookingLocation}</td>
+                                <td>Floor {gameFloor}</td>
                                 <td>{new Date(booking.bookingStartTime).toLocaleString()}</td>
                                 <td>{new Date(booking.bookingEndTime).toLocaleString()}</td>
                                 <td>
@@ -191,11 +194,11 @@ const UserDashboard = () => {
                                             )}
                                         </div>
                                     ) : (
-                                        <span className="status-badge pending">Pending</span>
-                                    )}
+                                        <span className="status-badge pending">Pending</span>                                    )}
                                 </td>
                             </tr>
-                        ))}
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>

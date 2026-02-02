@@ -1,64 +1,352 @@
+/* GamesSection.css - Horizontal Scrollable Carousel */
 .games-section {
-  padding: 60px 24px;
-  background-color: #f8f9fa;
+  padding: 80px 0;
+  background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 50%, #faf5ff 100%);
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.games-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(118, 75, 162, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+  animation: backgroundFloat 20s ease-in-out infinite;
+}
+
+@keyframes backgroundFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
 }
 
 .games-container {
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
+  position: relative;
 }
 
 .games-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
+  text-align: center;
+  margin-bottom: 60px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
 }
 
 .games-title {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #1a1a1a;
+  font-size: 3.5rem;
+  font-weight: 900;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+  letter-spacing: -1px;
+  animation: gradientText 5s ease infinite;
 }
 
-.see-all-link {
-  color: #0033A0;
-  font-weight: 600;
-  text-decoration: none;
-  font-size: 0.9rem;
+@keyframes gradientText {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
-.see-all-link:hover {
-  text-decoration: underline;
+/* Scrollable Carousel Container */
+.games-grid-wrapper {
+  position: relative;
+  padding: 0 80px;
+  margin-bottom: 40px;
+}
+
+.scroll-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 3px solid #ffffff;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+  transition: all 0.3s ease;
+  opacity: 0.95;
+}
+
+.scroll-button:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.15);
+  box-shadow: 0 15px 40px rgba(102, 126, 234, 0.7);
+}
+
+.scroll-button:active {
+  transform: translateY(-50%) scale(1.05);
+}
+
+.scroll-button.left {
+  left: 10px;
+}
+
+.scroll-button.right {
+  right: 10px;
+}
+
+.scroll-button:disabled {
+  opacity: 0.2;
+  cursor: not-allowed;
+  transform: translateY(-50%) scale(0.9);
 }
 
 .games-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 24px;
+  display: flex;
+  gap: 36px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  padding: 30px 10px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #667eea #f0f0f0;
 }
 
-.games-message {
-  grid-column: 1 / -1;
+.games-grid::-webkit-scrollbar {
+  height: 10px;
+}
+
+.games-grid::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, #f0f0f0 0%, #e8e8f0 100%);
+  border-radius: 10px;
+  margin: 0 80px;
+}
+
+.games-grid::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.games-grid::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #764ba2 0%, #f093fb 100%);
+}
+
+.game-card-wrapper {
+  flex: 0 0 auto;
+  width: 360px;
+  animation: slideInCard 0.7s ease-out backwards;
+}
+
+.game-card-wrapper:nth-child(1) { animation-delay: 0.1s; }
+.game-card-wrapper:nth-child(2) { animation-delay: 0.2s; }
+.game-card-wrapper:nth-child(3) { animation-delay: 0.3s; }
+.game-card-wrapper:nth-child(4) { animation-delay: 0.4s; }
+.game-card-wrapper:nth-child(5) { animation-delay: 0.5s; }
+.game-card-wrapper:nth-child(n+6) { animation-delay: 0.6s; }
+
+@keyframes slideInCard {
+  from {
+    opacity: 0;
+    transform: translateX(-60px) scale(0.9) rotateY(-15deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1) rotateY(0);
+  }
+}
+
+/* Scroll Indicators */
+.scroll-indicators {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 30px;
+  padding: 0 20px;
+}
+
+.scroll-indicator {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(102, 126, 234, 0.25);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: 2px solid transparent;
+  position: relative;
+}
+
+.scroll-indicator::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.scroll-indicator.active {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  width: 48px;
+  border-radius: 7px;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.5);
+}
+
+.scroll-indicator.active::after {
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+.scroll-indicator:hover:not(.active) {
+  background: rgba(102, 126, 234, 0.5);
+  transform: scale(1.3);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+/* Scroll Hint Animation */
+.scroll-hint {
   text-align: center;
-  padding: 48px 24px;
-  color: #666;
-  font-size: 1.1rem;
+  margin-top: 25px;
+  padding: 0 20px;
+  color: #667eea;
+  font-size: 1rem;
+  font-weight: 700;
+  animation: bounceHorizontal 2.5s ease-in-out infinite;
+  opacity: 0.8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-.games-message p {
-  margin: 0;
+.scroll-hint::before,
+.scroll-hint::after {
+  content: '→';
+  font-size: 1.4rem;
+  animation: arrowPulse 2s ease-in-out infinite;
+}
+
+.scroll-hint::before {
+  content: '←';
+  animation-delay: 1s;
+}
+
+@keyframes bounceHorizontal {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(12px); }
+}
+
+@keyframes arrowPulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Loading & Empty States */
+.games-message {
+  text-align: center;
+  padding: 80px 20px;
+  font-size: 1.3rem;
+  color: #667eea;
+  font-weight: 700;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .games-grid-wrapper {
+    padding: 0 70px;
+  }
+
+  .scroll-button {
+    width: 50px;
+    height: 50px;
+    font-size: 1.8rem;
+  }
+
+  .game-card-wrapper {
+    width: 340px;
+  }
 }
 
 @media (max-width: 768px) {
-  .games-header {
-    flex-direction: column;
-    gap: 16px;
-    text-align: center;
+  .games-section {
+    padding: 60px 0;
+  }
+
+  .games-title {
+    font-size: 2.5rem;
+  }
+
+  .games-grid-wrapper {
+    padding: 0 20px;
+  }
+
+  .scroll-button {
+    display: none;
+  }
+
+  .game-card-wrapper {
+    width: 300px;
+  }
+
+  .scroll-hint {
+    font-size: 0.9rem;
   }
 
   .games-grid {
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    gap: 16px;
+    gap: 24px;
+    padding: 20px 5px;
+  }
+
+  .games-grid::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .games-grid::-webkit-scrollbar-track {
+    margin: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .games-title {
+    font-size: 2rem;
+  }
+
+  .game-card-wrapper {
+    width: 280px;
+  }
+
+  .games-grid {
+    gap: 20px;
+  }
+
+  .scroll-indicators {
+    gap: 10px;
+  }
+
+  .scroll-indicator {
+    width: 10px;
+    height: 10px;
+  }
+
+  .scroll-indicator.active {
+    width: 36px;
   }
 }

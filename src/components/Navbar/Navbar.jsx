@@ -29,13 +29,30 @@ const Navbar = () => {
   const isAdmin = role === "ADMIN";
   const isUser = role === "USER";
 
-  // Some environments may not populate userId; for local dev/testing we fall back to "anonymous".
-  const userId = localStorage.getItem("userId") || "anonymous";
+  const userId = localStorage.getItem("userId") || "";
+  const lastUserIdRef = useRef(userId);
+
+  useEffect(() => {
+    if (lastUserIdRef.current !== userId) {
+      setNotifications([]);
+      setHasNotifications(false);
+      setShowNotifications(false);
+      lastUserIdRef.current = userId;
+    }
+  }, [userId]);
 
   const fetchLatestNotifications = async () => {
+    if (!userId) {
+      setNotifications([]);
+      setHasNotifications(false);
+      return;
+    }
+
     try {
       const response = await fetch(
-        `${VITE_NOTIFICATION_SERVICE_URL}${VITE_NOTIFICATION_PATH_PREFIX}/notifications/latest?limit=20`,
+        `${VITE_NOTIFICATION_SERVICE_URL}${VITE_NOTIFICATION_PATH_PREFIX}/notifications/latest?limit=20&userId=${encodeURIComponent(
+          userId,
+        )}`,
         {
           method: "GET",
           headers: {
@@ -65,6 +82,8 @@ const Navbar = () => {
         eventSourceRef.current.close();
         eventSourceRef.current = null;
       }
+      setNotifications([]);
+      setHasNotifications(false);
       return;
     }
 
@@ -89,17 +108,15 @@ const Navbar = () => {
     es.addEventListener("BOOKING_NOTIFICATION", (event) => {
       try {
         const payload = JSON.parse(event.data);
-        setNotifications((prev) => [payload, ...prev].slice(0, 20));
+
+        // Ensure this notification belongs to the current user
+        if (payload?.userId && String(payload.userId) === String(userId)) {
+          setNotifications((prev) => [payload, ...prev].slice(0, 20));
+          setHasNotifications(true);
+        }
       } catch {
-        // fallback if backend sends non-JSON
-        setNotifications((prev) =>
-          [{ id: crypto.randomUUID(), message: event.data }, ...prev].slice(
-            0,
-            20,
-          ),
-        );
+        // If backend sends non-JSON, ignore (cannot scope to a user safely)
       }
-      setHasNotifications(true);
     });
 
     es.onerror = (err) => {
@@ -127,6 +144,12 @@ const Navbar = () => {
     } catch (error) {
       console.error("Logout failed", error);
     } finally {
+      if (eventSourceRef.current) {
+        eventSourceRef.current.close();
+        eventSourceRef.current = null;
+      }
+      setNotifications([]);
+      setHasNotifications(false);
       localStorage.clear(); // Clear all local storage
       logout(); // Update store
       window.location.href = "/"; // Redirect to frontend homepage
@@ -176,11 +199,44 @@ const Navbar = () => {
                 {hasNotifications && (
                   <span className="notification-badge"></span>
                 )}
-              </button>
-
-              {showNotifications && (
+              </button>              {showNotifications && (
                 <div className="notifications-dropdown">
-                  <div className="notifications-header">Notifications</div>
+                  <div className="notifications-header">
+                    <span>Notifications</span>
+                    {notifications.length > 0 && (
+                      <button
+                        className="clear-all-btn"
+                        type="button"
+                        onClick={async (e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+
+                          try {
+                            await fetch(
+                              `${VITE_NOTIFICATION_SERVICE_URL}${VITE_NOTIFICATION_PATH_PREFIX}/notifications/clear?userId=${encodeURIComponent(userId)}`,
+                              {
+                                method: "DELETE",
+                                headers: {
+                                  accept: "application/json",
+                                },
+                              },
+                            );
+                          } catch (error) {
+                            console.error(
+                              "Failed to clear notifications from backend:",
+                              error,
+                            );
+                          }
+
+                          setNotifications([]);
+                          setHasNotifications(false);
+                          setShowNotifications(false);
+                        }}
+                      >
+                        Clear All
+                      </button>
+                    )}
+                  </div>
                   {notifications.length === 0 ? (
                     <div className="notifications-empty">No notifications</div>
                   ) : (
