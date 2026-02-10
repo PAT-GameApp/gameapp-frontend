@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import LocationModal from "../LocationModal/LocationModal";
 import useLocationStore from "../../store/useLocationStore";
 import "./Hero.css";
 
 const Hero = () => {
-  const navigate = useNavigate();
   const selectedLocation = useLocationStore((state) => state.selectedLocation);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -42,7 +40,7 @@ const Hero = () => {
           <p className="hero-description">
             Cognizant's Sports Community to Book Game Tables, Find Players, and
             Join Games at your Office.
-          </p>{" "}
+          </p>
           <button
             className="hero-cta-button"
             onClick={() => (window.location.href = "/dashboard")}
@@ -50,7 +48,6 @@ const Hero = () => {
             My Bookings
           </button>
         </div>
-        onClick={() => navigate("/dashboard")}
         <div className="hero-images">
           <div className="image-grid">
             <div className="image-placeholder large">
