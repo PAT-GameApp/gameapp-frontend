@@ -1,6 +1,12 @@
 import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getAllGames, getGamesByLocation, createGame, getLocations } from "../../services/api";
+import {
+  getAllGames,
+  getGamesByLocation,
+  createGame,
+  getLocations,
+} from "../../services/api";
+import ModalPortal from "../ModalPortal/ModalPortal";
 
 const GamesManagement = ({ selectedLocation }) => {
   const queryClient = useQueryClient();
@@ -36,7 +42,7 @@ const GamesManagement = ({ selectedLocation }) => {
       ...new Set(
         locations
           .filter((loc) => loc.country === selectedCountry)
-          .map((loc) => loc.city)
+          .map((loc) => loc.city),
       ),
     ].sort();
   }, [locations, selectedCountry]);
@@ -57,7 +63,10 @@ const GamesManagement = ({ selectedLocation }) => {
     error,
   } = useQuery({
     queryKey: ["games", selectedLocation?.locationId],
-    queryFn: () => (selectedLocation && selectedLocation.locationId) ? getGamesByLocation(selectedLocation.locationId) : getAllGames(),
+    queryFn: () =>
+      selectedLocation && selectedLocation.locationId
+        ? getGamesByLocation(selectedLocation.locationId)
+        : getAllGames(),
   });
 
   // Create game mutation
@@ -132,7 +141,9 @@ const GamesManagement = ({ selectedLocation }) => {
         </div>
         <div className="empty-state">
           <div className="empty-state-icon">❌</div>
-          <p className="empty-state-text">Error loading games: {error?.message}</p>
+          <p className="empty-state-text">
+            Error loading games: {error?.message}
+          </p>
         </div>
       </div>
     );
@@ -249,145 +260,149 @@ const GamesManagement = ({ selectedLocation }) => {
 
       {/* Create Game Modal */}
       {showCreateModal && (
-        <div
-          className="modal-overlay"
-          onClick={() => setShowCreateModal(false)}
-        >
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <div className="modal-header">
-              <h2 className="modal-title">Create New Game</h2>
-              <button
-                className="modal-close"
-                onClick={() => setShowCreateModal(false)}
-              >
-                ✕
-              </button>
-            </div>
-            <form onSubmit={handleCreateGame}>
-              <div className="form-group">
-                <label className="form-label">Game Name *</label>
-                <input
-                  type="text"
-                  name="gameName"
-                  className="form-input"
-                  placeholder="e.g., Snooker"
-                  value={formData.gameName}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Country *</label>
-                <select
-                  className="form-input"
-                  value={selectedCountry}
-                  onChange={handleCountryChange}
-                  required
-                >
-                  <option value="">Select Country</option>
-                  {countries.map((country) => (
-                    <option key={country} value={country}>
-                      {country}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">City *</label>
-                <select
-                  className="form-input"
-                  value={selectedCity}
-                  onChange={handleCityChange}
-                  disabled={!selectedCountry}
-                  required
-                >
-                  <option value="">Select City</option>
-                  {cities.map((city) => (
-                    <option key={city} value={city}>
-                      {city}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Office *</label>
-                <select
-                  name="locationId"
-                  className="form-input"
-                  value={formData.locationId}
-                  onChange={handleInputChange}
-                  disabled={!selectedCity}
-                  required
-                >
-                  <option value="">Select Office</option>
-                  {offices.map((loc) => (
-                    <option key={loc.locationId} value={loc.locationId}>
-                      {loc.office}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Floor *</label>
-                <input
-                  type="text"
-                  name="gameFloor"
-                  className="form-input"
-                  placeholder="e.g., 2"
-                  value={formData.gameFloor}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Number of Players *</label>
-                <input
-                  type="number"
-                  name="numberOfPlayers"
-                  className="form-input"
-                  placeholder="e.g., 4"
-                  value={formData.numberOfPlayers}
-                  onChange={handleInputChange}
-                  required
-                  min="1"
-                />
-              </div>
-              <div className="form-group">
-                <label className="form-label">Game Info</label>
-                <input
-                  type="text"
-                  name="gameInfo"
-                  className="form-input"
-                  placeholder="Optional description"
-                  value={formData.gameInfo}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="form-actions">
+        <ModalPortal>
+          <div
+            className="modal-overlay"
+            onClick={() => setShowCreateModal(false)}
+          >
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-header">
+                <h2 className="modal-title">Create New Game</h2>
                 <button
-                  type="button"
-                  className="admin-btn-secondary"
+                  className="modal-close"
                   onClick={() => setShowCreateModal(false)}
                 >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="admin-btn-primary"
-                  disabled={createGameMutation.isPending}
-                >
-                  {createGameMutation.isPending ? "Creating..." : "Create Game"}
+                  ✕
                 </button>
               </div>
-            </form>
+              <form onSubmit={handleCreateGame}>
+                <div className="form-group">
+                  <label className="form-label">Game Name *</label>
+                  <input
+                    type="text"
+                    name="gameName"
+                    className="form-input"
+                    placeholder="e.g., Snooker"
+                    value={formData.gameName}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Country *</label>
+                  <select
+                    className="form-input"
+                    value={selectedCountry}
+                    onChange={handleCountryChange}
+                    required
+                  >
+                    <option value="">Select Country</option>
+                    {countries.map((country) => (
+                      <option key={country} value={country}>
+                        {country}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">City *</label>
+                  <select
+                    className="form-input"
+                    value={selectedCity}
+                    onChange={handleCityChange}
+                    disabled={!selectedCountry}
+                    required
+                  >
+                    <option value="">Select City</option>
+                    {cities.map((city) => (
+                      <option key={city} value={city}>
+                        {city}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Office *</label>
+                  <select
+                    name="locationId"
+                    className="form-input"
+                    value={formData.locationId}
+                    onChange={handleInputChange}
+                    disabled={!selectedCity}
+                    required
+                  >
+                    <option value="">Select Office</option>
+                    {offices.map((loc) => (
+                      <option key={loc.locationId} value={loc.locationId}>
+                        {loc.office}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label className="form-label">Floor *</label>
+                  <input
+                    type="text"
+                    name="gameFloor"
+                    className="form-input"
+                    placeholder="e.g., 2"
+                    value={formData.gameFloor}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Number of Players *</label>
+                  <input
+                    type="number"
+                    name="numberOfPlayers"
+                    className="form-input"
+                    placeholder="e.g., 4"
+                    value={formData.numberOfPlayers}
+                    onChange={handleInputChange}
+                    required
+                    min="1"
+                  />
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Game Info</label>
+                  <input
+                    type="text"
+                    name="gameInfo"
+                    className="form-input"
+                    placeholder="Optional description"
+                    value={formData.gameInfo}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="form-actions">
+                  <button
+                    type="button"
+                    className="admin-btn-secondary"
+                    onClick={() => setShowCreateModal(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="admin-btn-primary"
+                    disabled={createGameMutation.isPending}
+                  >
+                    {createGameMutation.isPending
+                      ? "Creating..."
+                      : "Create Game"}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div >
+        </ModalPortal>
       )}
-    </div >
+    </div>
   );
 };
 
