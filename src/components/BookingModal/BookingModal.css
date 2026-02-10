@@ -221,13 +221,18 @@
   font-weight: 500;
 }
 
-/* Remove dropdown arrow from regular text inputs */
-.booking-field input[type="text"]::-webkit-calendar-picker-indicator,
-.booking-field input[type="text"]::-webkit-inner-spin-button,
-.booking-field input[type="text"]::-webkit-outer-spin-button {
-  display: none;
+/* Remove increment/decrement arrows (spinners) from Player ID number inputs */
+.booking-field input.player-id-input::-webkit-inner-spin-button,
+.booking-field input.player-id-input::-webkit-outer-spin-button {
   -webkit-appearance: none;
+  appearance: none;
   margin: 0;
+  display: none;
+}
+
+.booking-field input.player-id-input {
+  -moz-appearance: textfield; /* Firefox */
+  appearance: textfield;
 }
 
 .booking-field input:focus,

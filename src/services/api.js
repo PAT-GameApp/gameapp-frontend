@@ -30,7 +30,7 @@ apiClient.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Request interceptor to add Authorization header with Bearer token
@@ -44,7 +44,7 @@ chatApiClient.interceptors.request.use(
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // ==================== API FUNCTIONS ====================
@@ -88,7 +88,10 @@ export const createEquipment = async (equipmentData) => {
 
 // PUT update equipment (requires full DTO)
 export const updateEquipment = async ({ equipmentId, equipmentData }) => {
-  const response = await apiClient.put(`/equipment/${equipmentId}`, equipmentData);
+  const response = await apiClient.put(
+    `/equipment/${equipmentId}`,
+    equipmentData,
+  );
   return response.data;
 };
 

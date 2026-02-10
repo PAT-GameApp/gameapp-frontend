@@ -146,7 +146,7 @@ const InventoryManagement = ({ selectedLocation }) => {
   const handleDeleteEquipment = () => {
     if (!selectedEquipment?.equipmentId) return;
     const ok = window.confirm(
-      `Delete equipment "${selectedEquipment.equipmentName}"? This cannot be undone.`
+      `Delete equipment "${selectedEquipment.equipmentName}"? This cannot be undone.`,
     );
     if (!ok) return;
     deleteEquipmentMutation.mutate(selectedEquipment.equipmentId);
@@ -383,7 +383,10 @@ const InventoryManagement = ({ selectedLocation }) => {
           <div
             className="modal-overlay"
             onClick={() => {
-              if (updateEquipmentMutation.isPending || deleteEquipmentMutation.isPending)
+              if (
+                updateEquipmentMutation.isPending ||
+                deleteEquipmentMutation.isPending
+              )
                 return;
               setShowEditModal(false);
               setSelectedEquipment(null);
@@ -396,7 +399,10 @@ const InventoryManagement = ({ selectedLocation }) => {
                 <button
                   className="modal-close"
                   onClick={() => {
-                    if (updateEquipmentMutation.isPending || deleteEquipmentMutation.isPending)
+                    if (
+                      updateEquipmentMutation.isPending ||
+                      deleteEquipmentMutation.isPending
+                    )
                       return;
                     setShowEditModal(false);
                     setSelectedEquipment(null);
@@ -412,7 +418,8 @@ const InventoryManagement = ({ selectedLocation }) => {
                   <strong>{selectedEquipment.equipmentName}</strong>
                 </div>
                 <div style={{ fontSize: "0.9rem" }}>
-                  ID: #{selectedEquipment.equipmentId} • Game: {getGameName(selectedEquipment.gameId)}
+                  ID: #{selectedEquipment.equipmentId} • Game:{" "}
+                  {getGameName(selectedEquipment.gameId)}
                 </div>
               </div>
 
@@ -430,7 +437,8 @@ const InventoryManagement = ({ selectedLocation }) => {
                   />
                 </div>
 
-                {(updateEquipmentMutation.isError || deleteEquipmentMutation.isError) && (
+                {(updateEquipmentMutation.isError ||
+                  deleteEquipmentMutation.isError) && (
                   <div
                     style={{
                       marginTop: "8px",
@@ -439,19 +447,28 @@ const InventoryManagement = ({ selectedLocation }) => {
                     }}
                   >
                     {(
-                      updateEquipmentMutation.error || deleteEquipmentMutation.error
+                      updateEquipmentMutation.error ||
+                      deleteEquipmentMutation.error
                     )?.message || "Operation failed"}
                   </div>
                 )}
 
-                <div className="form-actions" style={{ justifyContent: "space-between" }}>
+                <div
+                  className="form-actions"
+                  style={{ justifyContent: "space-between" }}
+                >
                   <button
                     type="button"
                     className="admin-btn-danger"
                     onClick={handleDeleteEquipment}
-                    disabled={updateEquipmentMutation.isPending || deleteEquipmentMutation.isPending}
+                    disabled={
+                      updateEquipmentMutation.isPending ||
+                      deleteEquipmentMutation.isPending
+                    }
                   >
-                    {deleteEquipmentMutation.isPending ? "Deleting..." : "Delete Equipment"}
+                    {deleteEquipmentMutation.isPending
+                      ? "Deleting..."
+                      : "Delete Equipment"}
                   </button>
 
                   <div style={{ display: "flex", gap: "12px" }}>
@@ -468,7 +485,10 @@ const InventoryManagement = ({ selectedLocation }) => {
                         setSelectedEquipment(null);
                         setEditQuantity("");
                       }}
-                      disabled={updateEquipmentMutation.isPending || deleteEquipmentMutation.isPending}
+                      disabled={
+                        updateEquipmentMutation.isPending ||
+                        deleteEquipmentMutation.isPending
+                      }
                     >
                       Cancel
                     </button>

@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getLocations } from '../../services/api';
 import useLocationStore from '../../store/useLocationStore';
@@ -10,6 +11,7 @@ const LocationModal = ({ isOpen, onClose }) => {
     const [selectedCity, setSelectedCity] = useState(null);
 
     const setSelectedLocation = useLocationStore((state) => state.setSelectedLocation);
+    const clearSelectedLocation = useLocationStore((state) => state.clearSelectedLocation);
 
     const { data: locations = [], isLoading, isError } = useQuery({
         queryKey: ['locations'],
@@ -58,6 +60,16 @@ const LocationModal = ({ isOpen, onClose }) => {
         }, 300);
     };
 
+    const handleResetLocation = () => {
+        clearSelectedLocation();
+        onClose();
+        setTimeout(() => {
+            setStep('country');
+            setSelectedCountry(null);
+            setSelectedCity(null);
+        }, 300);
+    };
+
     const handleBack = () => {
         if (step === 'city') {
             setStep('country');
@@ -70,17 +82,25 @@ const LocationModal = ({ isOpen, onClose }) => {
 
     if (!isOpen) return null;
 
-    return (
+    const modal = (
         <div className="location-modal-overlay" onClick={onClose}>
-            <div className="location-modal-content" onClick={e => e.stopPropagation()}>
+            <div className="location-modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="location-modal-header">
-                    {step !== 'country' && (
+                    {step !== 'country' ? (
                         <button className="back-button" onClick={handleBack}>
                             ← Back
                         </button>
+                    ) : (
+                        <span className="location-modal-header-spacer" />
                     )}
+
                     <h2>Select {step.charAt(0).toUpperCase() + step.slice(1)}</h2>
-                    <button className="close-button" onClick={onClose}>×</button>
+
+                    <div className="location-modal-header-actions">
+                        <button className="close-button" type="button" onClick={onClose} aria-label="Close">
+                            ×
+                        </button>
+                    </div>
                 </div>
 
                 <div className="location-modal-body">
@@ -90,41 +110,57 @@ const LocationModal = ({ isOpen, onClose }) => {
                         <div className="error-state">Failed to load locations</div>
                     ) : (
                         <div className="options-grid">
-                            {step === 'country' && countries.map(country => (
-                                <button
-                                    key={country}
-                                    className="location-option-btn"
-                                    onClick={() => handleCountrySelect(country)}
-                                >
-                                    {country}
-                                </button>
-                            ))}
+                            {step === 'country' &&
+                                countries.map((country) => (
+                                    <button
+                                        key={country}
+                                        className="location-option-btn"
+                                        onClick={() => handleCountrySelect(country)}
+                                    >
+                                        {country}
+                                    </button>
+                                ))}
 
-                            {step === 'city' && cities.map(city => (
-                                <button
-                                    key={city}
-                                    className="location-option-btn"
-                                    onClick={() => handleCitySelect(city)}
-                                >
-                                    {city}
-                                </button>
-                            ))}
+                            {step === 'city' &&
+                                cities.map((city) => (
+                                    <button
+                                        key={city}
+                                        className="location-option-btn"
+                                        onClick={() => handleCitySelect(city)}
+                                    >
+                                        {city}
+                                    </button>
+                                ))}
 
-                            {step === 'office' && offices.map(office => (
-                                <button
-                                    key={office.locationId}
-                                    className="location-option-btn"
-                                    onClick={() => handleOfficeSelect(office)}
-                                >
-                                    {office.office}
-                                </button>
-                            ))}
+                            {step === 'office' &&
+                                offices.map((office) => (
+                                    <button
+                                        key={office.locationId}
+                                        className="location-option-btn"
+                                        onClick={() => handleOfficeSelect(office)}
+                                    >
+                                        {office.office}
+                                    </button>
+                                ))}
                         </div>
                     )}
+
+                    <div className="location-modal-footer">
+                        <button
+                            className="reset-button"
+                            type="button"
+                            onClick={handleResetLocation}
+                            title="Clear selected location"
+                        >
+                            Reset location
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     );
+
+    return createPortal(modal, document.body);
 };
 
 export default LocationModal;

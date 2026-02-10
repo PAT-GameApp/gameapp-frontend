@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { getLocations } from '../../services/api';
+import { useNavigate } from 'react-router-dom';
 import LocationModal from '../LocationModal/LocationModal';
 import useLocationStore from '../../store/useLocationStore';
 import './Hero.css';
 
 const Hero = () => {
+  const navigate = useNavigate();
   const selectedLocation = useLocationStore((state) => state.selectedLocation);
-  const setSelectedLocation = useLocationStore((state) => state.setSelectedLocation);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
 
@@ -52,7 +51,7 @@ const Hero = () => {
             My Bookings
           </button>
         </div>
-
+            onClick={() => navigate('/dashboard')}
         <div className="hero-images">
           <div className="image-grid">
             <div className="image-placeholder large">

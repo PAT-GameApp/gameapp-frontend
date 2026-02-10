@@ -48,6 +48,16 @@
   z-index: 1;
 }
 
+.location-modal-header-spacer {
+  width: 72px;
+}
+
+.location-modal-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .location-modal-header h2 {
   margin: 0;
   font-size: 1.25rem;
@@ -72,6 +82,26 @@
   justify-content: center;
 }
 
+.reset-button {
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding: 6px 10px;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  opacity: 0.72;
+}
+
+.reset-button:hover {
+  opacity: 1;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
 .back-button:hover,
 .close-button:hover {
   background-color: var(--bg-secondary);
@@ -86,6 +116,12 @@
 
 .location-modal-body {
   padding: 24px;
+}
+
+.location-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
 }
 
 .options-grid {

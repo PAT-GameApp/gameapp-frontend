@@ -115,6 +115,7 @@ const BookingModal = ({ game, location, userId, onClose, onSuccess }) => {
                                     <div key={index} className="booking-field">
                                         <label>Player {index + 1} ID</label>
                                         <input
+                                            className="player-id-input"
                                             type="number"
                                             value={playerIds[index]}
                                             onChange={(e) => handlePlayerIdChange(index, e.target.value)}
