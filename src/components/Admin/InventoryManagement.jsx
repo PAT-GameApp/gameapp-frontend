@@ -5,12 +5,17 @@ import {
   getAllGames,
   getGamesByLocation,
   createEquipment,
+  updateEquipment,
+  deleteEquipment,
 } from "../../services/api";
 import ModalPortal from "../ModalPortal/ModalPortal";
 
 const InventoryManagement = ({ selectedLocation }) => {
   const queryClient = useQueryClient();
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedEquipment, setSelectedEquipment] = useState(null);
+  const [editQuantity, setEditQuantity] = useState("");
   const [formData, setFormData] = useState({
     equipmentName: "",
     equipmentQuantity: "",
@@ -67,6 +72,32 @@ const InventoryManagement = ({ selectedLocation }) => {
     },
   });
 
+  const updateEquipmentMutation = useMutation({
+    mutationFn: updateEquipment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["equipment"] });
+      setShowEditModal(false);
+      setSelectedEquipment(null);
+      setEditQuantity("");
+    },
+    onError: (error) => {
+      console.error("Failed to update equipment:", error);
+    },
+  });
+
+  const deleteEquipmentMutation = useMutation({
+    mutationFn: deleteEquipment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["equipment"] });
+      setShowEditModal(false);
+      setSelectedEquipment(null);
+      setEditQuantity("");
+    },
+    onError: (error) => {
+      console.error("Failed to delete equipment:", error);
+    },
+  });
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -82,6 +113,43 @@ const InventoryManagement = ({ selectedLocation }) => {
       equipmentQuantity: parseInt(formData.equipmentQuantity),
       gameId: parseInt(formData.gameId),
     });
+  };
+
+  const openEditModal = (item) => {
+    const normalized = {
+      equipmentId: item.equipmentId ?? item.equipment_id,
+      equipmentName: item.equipmentName,
+      equipmentQuantity: item.equipmentQuantity,
+      gameId: item.gameId,
+    };
+    setSelectedEquipment(normalized);
+    setEditQuantity(String(normalized.equipmentQuantity ?? ""));
+    setShowEditModal(true);
+  };
+
+  const handleUpdateQuantity = (e) => {
+    e.preventDefault();
+    if (!selectedEquipment?.equipmentId) return;
+
+    const quantityInt = parseInt(editQuantity, 10);
+    updateEquipmentMutation.mutate({
+      equipmentId: selectedEquipment.equipmentId,
+      equipmentData: {
+        equipmentId: selectedEquipment.equipmentId,
+        equipmentName: selectedEquipment.equipmentName,
+        equipmentQuantity: quantityInt,
+        gameId: selectedEquipment.gameId,
+      },
+    });
+  };
+
+  const handleDeleteEquipment = () => {
+    if (!selectedEquipment?.equipmentId) return;
+    const ok = window.confirm(
+      `Delete equipment "${selectedEquipment.equipmentName}"? This cannot be undone.`
+    );
+    if (!ok) return;
+    deleteEquipmentMutation.mutate(selectedEquipment.equipmentId);
   };
 
   const getGameName = (gameId) => {
@@ -165,7 +233,12 @@ const InventoryManagement = ({ selectedLocation }) => {
                   <td>{item.equipmentQuantity || item.equipmentQuantity}</td>
                   <td>{getGameName(item.gameId || item.gameId)}</td>
                   <td>
-                    <button className="admin-btn-secondary">Edit</button>
+                    <button
+                      className="admin-btn-secondary"
+                      onClick={() => openEditModal(item)}
+                    >
+                      Edit
+                    </button>
                   </td>
                 </tr>
               ))
@@ -297,6 +370,119 @@ const InventoryManagement = ({ selectedLocation }) => {
                       ? "Adding..."
                       : "Add Equipment"}
                   </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </ModalPortal>
+      )}
+
+      {/* Edit Equipment Modal (Update Quantity + Delete) */}
+      {showEditModal && selectedEquipment && (
+        <ModalPortal>
+          <div
+            className="modal-overlay"
+            onClick={() => {
+              if (updateEquipmentMutation.isPending || deleteEquipmentMutation.isPending)
+                return;
+              setShowEditModal(false);
+              setSelectedEquipment(null);
+              setEditQuantity("");
+            }}
+          >
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <div className="modal-header">
+                <h2 className="modal-title">Edit Equipment</h2>
+                <button
+                  className="modal-close"
+                  onClick={() => {
+                    if (updateEquipmentMutation.isPending || deleteEquipmentMutation.isPending)
+                      return;
+                    setShowEditModal(false);
+                    setSelectedEquipment(null);
+                    setEditQuantity("");
+                  }}
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div style={{ marginBottom: "12px", color: "#555" }}>
+                <div>
+                  <strong>{selectedEquipment.equipmentName}</strong>
+                </div>
+                <div style={{ fontSize: "0.9rem" }}>
+                  ID: #{selectedEquipment.equipmentId} • Game: {getGameName(selectedEquipment.gameId)}
+                </div>
+              </div>
+
+              <form onSubmit={handleUpdateQuantity}>
+                <div className="form-group">
+                  <label className="form-label">Stock Quantity *</label>
+                  <input
+                    type="number"
+                    className="form-input"
+                    min="1"
+                    step="1"
+                    value={editQuantity}
+                    onChange={(e) => setEditQuantity(e.target.value)}
+                    required
+                  />
+                </div>
+
+                {(updateEquipmentMutation.isError || deleteEquipmentMutation.isError) && (
+                  <div
+                    style={{
+                      marginTop: "8px",
+                      color: "#b42318",
+                      fontSize: "0.9rem",
+                    }}
+                  >
+                    {(
+                      updateEquipmentMutation.error || deleteEquipmentMutation.error
+                    )?.message || "Operation failed"}
+                  </div>
+                )}
+
+                <div className="form-actions" style={{ justifyContent: "space-between" }}>
+                  <button
+                    type="button"
+                    className="admin-btn-danger"
+                    onClick={handleDeleteEquipment}
+                    disabled={updateEquipmentMutation.isPending || deleteEquipmentMutation.isPending}
+                  >
+                    {deleteEquipmentMutation.isPending ? "Deleting..." : "Delete Equipment"}
+                  </button>
+
+                  <div style={{ display: "flex", gap: "12px" }}>
+                    <button
+                      type="button"
+                      className="admin-btn-secondary"
+                      onClick={() => {
+                        if (
+                          updateEquipmentMutation.isPending ||
+                          deleteEquipmentMutation.isPending
+                        )
+                          return;
+                        setShowEditModal(false);
+                        setSelectedEquipment(null);
+                        setEditQuantity("");
+                      }}
+                      disabled={updateEquipmentMutation.isPending || deleteEquipmentMutation.isPending}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="admin-btn-primary"
+                      disabled={
+                        updateEquipmentMutation.isPending ||
+                        deleteEquipmentMutation.isPending
+                      }
+                    >
+                      {updateEquipmentMutation.isPending ? "Saving..." : "Save"}
+                    </button>
+                  </div>
                 </div>
               </form>
             </div>

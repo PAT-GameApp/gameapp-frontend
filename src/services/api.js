@@ -86,6 +86,18 @@ export const createEquipment = async (equipmentData) => {
   return response.data;
 };
 
+// PUT update equipment (requires full DTO)
+export const updateEquipment = async ({ equipmentId, equipmentData }) => {
+  const response = await apiClient.put(`/equipment/${equipmentId}`, equipmentData);
+  return response.data;
+};
+
+// DELETE remove equipment by id
+export const deleteEquipment = async (equipmentId) => {
+  const response = await apiClient.delete(`/equipment/${equipmentId}`);
+  return response.data;
+};
+
 // --- Bookings APIs ---
 // GET all bookings
 export const getAllBookings = async () => {
