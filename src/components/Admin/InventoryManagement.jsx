@@ -173,10 +173,18 @@ const InventoryManagement = ({ selectedLocation }) => {
 
   const getFormattedGameName = (game) => {
     // Try different possible property names
-    const locationId = game.locationId || game.location_id || game.location?.locationId;
-    console.log('Full game object:', game);
+    const locationId =
+      game.locationId || game.location_id || game.location?.locationId;
+    console.log("Full game object:", game);
     const location = locationId ? getLocationInfo(locationId) : null;
-    console.log('Game:', game.gameName, 'LocationId:', locationId, 'Found Location:', location);
+    console.log(
+      "Game:",
+      game.gameName,
+      "LocationId:",
+      locationId,
+      "Found Location:",
+      location,
+    );
     if (location && location.office) {
       return `${game.gameName} - ${game.gameFloor || game.game_floor} - ${location.office}`;
     }
