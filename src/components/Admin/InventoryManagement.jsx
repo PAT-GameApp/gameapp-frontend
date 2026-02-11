@@ -7,6 +7,7 @@ import {
   createEquipment,
   updateEquipment,
   deleteEquipment,
+  getLocations,
 } from "../../services/api";
 import ModalPortal from "../ModalPortal/ModalPortal";
 
@@ -35,6 +36,14 @@ const InventoryManagement = ({ selectedLocation }) => {
 
   // Ensure inventory is always an array
   const inventory = Array.isArray(inventoryData) ? inventoryData : [];
+
+  // Fetch locations for displaying location info
+  const { data: locationsData } = useQuery({
+    queryKey: ["locations"],
+    queryFn: getLocations,
+  });
+
+  const locations = Array.isArray(locationsData) ? locationsData : [];
 
   // Fetch games for the dropdown - conditionally by location
   const { data: gamesData } = useQuery({
@@ -155,6 +164,33 @@ const InventoryManagement = ({ selectedLocation }) => {
   const getGameName = (gameId) => {
     const game = games.find((g) => g.gameId === gameId);
     return game ? game.gameName : "Unknown Game";
+  };
+
+  const getLocationInfo = (locationId) => {
+    const location = locations.find((loc) => loc.locationId === locationId);
+    return location;
+  };
+
+  const getFormattedGameName = (game) => {
+    // Try different possible property names
+    const locationId = game.locationId || game.location_id || game.location?.locationId;
+    console.log('Full game object:', game);
+    const location = locationId ? getLocationInfo(locationId) : null;
+    console.log('Game:', game.gameName, 'LocationId:', locationId, 'Found Location:', location);
+    if (location && location.office) {
+      return `${game.gameName} - ${game.gameFloor || game.game_floor} - ${location.office}`;
+    }
+    // Fallback if location not found - still show floor and gameLocation
+    const floor = game.gameFloor || game.game_floor;
+    const gameLocation = game.gameLocation || game.game_location;
+    if (floor && gameLocation) {
+      return `${game.gameName} - ${floor} - ${gameLocation}`;
+    } else if (floor) {
+      return `${game.gameName} - ${floor}`;
+    } else if (gameLocation) {
+      return `${game.gameName} - ${gameLocation}`;
+    }
+    return game.gameName;
   };
 
   if (isLoadingInventory) {
@@ -348,7 +384,7 @@ const InventoryManagement = ({ selectedLocation }) => {
                     <option value="">Select a game</option>
                     {games.map((game) => (
                       <option key={game.gameId} value={game.gameId}>
-                        {game.gameName} - {game.gameLocation}
+                        {getFormattedGameName(game)}
                       </option>
                     ))}
                   </select>
